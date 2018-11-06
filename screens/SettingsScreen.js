@@ -15,11 +15,13 @@ export default class SettingsScreen extends React.Component {
     /* Go ahead and delete ExpoConfigView and replace it with your
      * content, we just wanted to give you a quick view of your config */
     return(
-    <RadioForm
-      radio_props={radio_props}
-      initial={0}
-      onPress={(value) => {this.setState({value:value})}}
-    />
+      <View>
+        <RadioForm
+          radio_props={radio_props}
+          initial={0}
+          onPress={(value) => {this.setState({value:value})}}
+        />
+      </View>
       
       );
   }
