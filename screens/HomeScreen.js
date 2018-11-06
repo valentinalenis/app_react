@@ -71,6 +71,23 @@ export default class HomeScreen extends React.Component {
                 />
               </CardAction>
             </Card>
+
+            <Card>
+              <CardTitle 
+                title="saludable" 
+                subtitle="Alimentación saludable"
+              />
+              <CardContent text="Todo es comida, hay que comer gordis." />
+              <CardAction 
+                separator={true} 
+                inColumn={false}>
+                <CardButton
+                  onPress={() => {}}
+                  title="Like"
+                  color="green"
+                />
+              </CardAction>
+            </Card>
           </View>
         </ScrollView>
       </View>
