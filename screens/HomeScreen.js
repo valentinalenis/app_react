@@ -52,7 +52,23 @@ export default class HomeScreen extends React.Component {
                   title="Like"
                   color="green"
                 />
-               
+              </CardAction>
+            </Card>
+
+            <Card>
+              <CardTitle 
+                title="Comer como cerdos" 
+                subtitle="Alimentación"
+              />
+              <CardContent text="Todo es comida, hay que comer gordis." />
+              <CardAction 
+                separator={true} 
+                inColumn={false}>
+                <CardButton
+                  onPress={() => {}}
+                  title="Like"
+                  color="green"
+                />
               </CardAction>
             </Card>
 
