@@ -50,7 +50,7 @@ export default class HomeScreen extends React.Component {
                 <CardButton
                   onPress={() => {}}
                   title="Like"
-                  color="green"
+                  color="blue"
                 />
               </CardAction>
             </Card>
@@ -67,7 +67,7 @@ export default class HomeScreen extends React.Component {
                 <CardButton
                   onPress={() => {}}
                   title="Like"
-                  color="green"
+                  color="blue"
                 />
               </CardAction>
             </Card>
@@ -84,7 +84,7 @@ export default class HomeScreen extends React.Component {
                 <CardButton
                   onPress={() => {}}
                   title="Like"
-                  color="red"
+                  color="blue"
                 />
               </CardAction>
             </Card>
