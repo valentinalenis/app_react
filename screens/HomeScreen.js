@@ -11,8 +11,6 @@ import {
 import { WebBrowser } from 'expo';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
 import { MonoText } from '../components/StyledText';
-import { RadioB } from '../components/RadioB';
-
 
 
 export default class HomeScreen extends React.Component {
@@ -86,7 +84,7 @@ export default class HomeScreen extends React.Component {
                 <CardButton
                   onPress={() => {}}
                   title="Like"
-                  color="blue"
+                  color="red"
                 />
               </CardAction>
             </Card>
