@@ -39,10 +39,6 @@ export default class HomeScreen extends React.Component {
 
           <View style={styles.helpContainer}>
           <Card>
-              <CardImage 
-                source={{uri: 'http://placehold.it/480x270'}} 
-                title="Evento"
-              />
               <CardTitle 
                 title="Carrera 10k" 
                 subtitle="Deporte"
@@ -56,7 +52,23 @@ export default class HomeScreen extends React.Component {
                   title="Like"
                   color="green"
                 />
-               
+              </CardAction>
+            </Card>
+
+            <Card>
+              <CardTitle 
+                title="Comer como cerdos" 
+                subtitle="Alimentación"
+              />
+              <CardContent text="Todo es comida, hay que comer gordis." />
+              <CardAction 
+                separator={true} 
+                inColumn={false}>
+                <CardButton
+                  onPress={() => {}}
+                  title="Like"
+                  color="green"
+                />
               </CardAction>
             </Card>
           </View>
