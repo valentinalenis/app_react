@@ -74,7 +74,7 @@ export default class HomeScreen extends React.Component {
 
             <Card>
               <CardTitle 
-                title="Alimentación Masiva" 
+                title="Alimentación" 
                 subtitle="Alimentación saludable"
               />
               <CardContent text="Todo es comida, hay que comer gordis." />
@@ -84,7 +84,7 @@ export default class HomeScreen extends React.Component {
                 <CardButton
                   onPress={() => {}}
                   title="Like"
-                  color="red"
+                  color="green"
                 />
               </CardAction>
             </Card>
