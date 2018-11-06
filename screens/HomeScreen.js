@@ -84,7 +84,7 @@ export default class HomeScreen extends React.Component {
                 <CardButton
                   onPress={() => {}}
                   title="Like"
-                  color="green"
+                  color="red"
                 />
               </CardAction>
             </Card>
