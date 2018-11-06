@@ -27,4 +27,3 @@ export default class RadioB extends React.Component {
       );
     }
   }
-export default RadioB;
