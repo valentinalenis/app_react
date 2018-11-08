@@ -11,6 +11,7 @@ import {
 import { WebBrowser } from 'expo';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
 import { MonoText } from '../components/StyledText';
+import Cardv from '../components/CardView';
 
 
 export default class HomeScreen extends React.Component {
@@ -38,56 +39,7 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles.helpContainer}>
-          <Card>
-              <CardTitle 
-                title="Carrera 10k" 
-                subtitle="Deporte"
-              />
-              <CardContent text="No todo es comida, hay que hacer deporte, gordos." />
-              <CardAction 
-                separator={true} 
-                inColumn={false}>
-                <CardButton
-                  onPress={() => {}}
-                  title="Like"
-                  color="blue"
-                />
-              </CardAction>
-            </Card>
-
-            <Card>
-              <CardTitle 
-                title="Comer como cerdos" 
-                subtitle="Alimentación"
-              />
-              <CardContent text="Todo es comida, hay que comer gordis." />
-              <CardAction 
-                separator={true} 
-                inColumn={false}>
-                <CardButton
-                  onPress={() => {}}
-                  title="Like"
-                  color="blue"
-                />
-              </CardAction>
-            </Card>
-
-            <Card>
-              <CardTitle 
-                title="Alimentación" 
-                subtitle="Alimentación saludable"
-              />
-              <CardContent text="Todo es comida, hay que comer gordis." />
-              <CardAction 
-                separator={true} 
-                inColumn={false}>
-                <CardButton
-                  onPress={() => {}}
-                  title="Like"
-                  color="blue"
-                />
-              </CardAction>
-            </Card>
+            <Cardv/>
           </View>
         </ScrollView>
       </View>

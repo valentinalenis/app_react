@@ -2,11 +2,23 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
+import axios from "axios";
 
 export default class App extends React.Component {
-  state = {
-    isLoadingComplete: false,
-  };
+
+  componentDidMount(){
+    axios
+    .get('http://192.168.1.19:3001')
+    .then(res => {
+    const { data } = res
+    this.setState({
+    dataSource: data,
+    });
+    })
+    .catch((error) =>{
+      console.error(error);
+    });
+  }
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -60,3 +72,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
+
