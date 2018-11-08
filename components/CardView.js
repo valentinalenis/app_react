@@ -3,29 +3,29 @@ import { Card, CardTitle, CardContent, CardAction, CardButton } from 'react-nati
 import axios from "axios";
 
 class cardView extends Component {
-    
+    /*
     componentDidMount(){
         axios
-        .get('http://192.168.1.19:3001')
+        .get('https://jsonplaceholder.typicode.com/users')
         .then(res => {
         const { data } = res
         this.setState({
         dataSource: data,
-        evento: data.evento,
+        persons: data.data,
         });
         })
         .catch((error) =>{
           console.error(error);
         });
       }
-    
+    */
   
     render() {
       
       return (
         <Card>
             <CardTitle 
-            title={this.evento}
+            title={this.state.persons}
             subtitle="Deporte"
             />
             <CardContent text="No todo es comida, hay que hacer deporte, gordos." />

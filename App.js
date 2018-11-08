@@ -5,21 +5,21 @@ import AppNavigator from './navigation/AppNavigator';
 import axios from "axios";
 
 export default class App extends React.Component {
-
+/*
   componentDidMount(){
     axios
     .get('http://192.168.1.19:3001')
     .then(res => {
     const { data } = res
     this.setState({
-    dataSource: data,
+    dataSource: data
     });
     })
     .catch((error) =>{
       console.error(error);
     });
   }
-
+*/
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
