@@ -1,5 +1,6 @@
 import React ,{ Component } from 'react';
-import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
+import { Card, CardTitle, CardContent, CardAction, CardButton } from 'react-native-material-cards'
+import axios from "axios";
 
 class cardView extends Component {
     
