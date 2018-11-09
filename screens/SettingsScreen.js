@@ -1,39 +1,76 @@
 import React from 'react';
-import Card from '../components/CardView';
-import {RadioGroup, RadioButton} from 'react-native-flexi-radio-button'
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import StarCal from '../components/Star';
+import { Card, CardTitle, CardContent, CardAction, CardButton } from 'react-native-material-cards'
+import { Header } from 'react-native-elements';
+import axios from "axios";
 
 export default class SettingsScreen extends React.Component {
+  state = {
+    name: [],
+    place1: [],
+    place2: [],
+    place3: [],
+    date1: [], 
+    date2: [],
+    date3: [],
+    time1: [], 
+    time2: [],
+    time3: [],
+
+  };
   
-  onSelect(index, value){
-    this.setState({
-      text: `Selected index: ${index} , value: ${value}`
-    })
-  }
+  componentDidMount(){
+      axios
+      .get('https://192.168.1.19:3301')
+      .then(res => {
+          const { data } = res
+          console.log(res)
+          this.setState({
+          name: res.name,
+          place1: res.place1,
+          place2: res.place2,
+          place3: res.place3,
+          date1: res.date1,
+          date2: res.date2,
+          date3: res.date3,
+          time1: res.time1,
+          time2: res.time2,
+          time3: res.time3,
+          
+          });
+          
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
+    }
 
   render() {
     
     return (
+     
       <View >
-      <RadioGroup  onSelect = {(index, value) => this.onSelect(index, value)} >
-        <RadioButton value={'item1'} >
-          <Text>1 Estrella</Text>
-        </RadioButton>
- 
-        <RadioButton value={'item2'}>
-          <Text>2 Estrellas</Text>
-        </RadioButton>
- 
-        <RadioButton value={'item3'}>
-          <Text>3 Estrellas</Text>
-        </RadioButton>
-      </RadioGroup>
-      <Button
-        title="Enviar"
-        color="blue"
+        <Text  style={styles.blue} h1>{this.state.name}</Text>
+
+        <StarCal/>
+        <View
+          style={{
+            borderBottomColor: 'black',
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            width: '100%',
+          }}
         />
-       
+        <Button title="Enviar" color="blue"/>
+
     </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  
+  blue: {
+    color: 'blue',
+  },
+});
