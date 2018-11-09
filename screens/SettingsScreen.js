@@ -6,15 +6,6 @@ import axios from "axios";
 export default class SettingsScreen extends React.Component {
   state = {
     name: [],
-    place1: [],
-    place2: [],
-    place3: [],
-    date1: [], 
-    date2: [],
-    date3: [],
-    time1: [], 
-    time2: [],
-    time3: [],
 
   };
   
@@ -26,16 +17,6 @@ export default class SettingsScreen extends React.Component {
           console.log(res)
           this.setState({
           name: res.name,
-          place1: res.place1,
-          place2: res.place2,
-          place3: res.place3,
-          date1: res.date1,
-          date2: res.date2,
-          date3: res.date3,
-          time1: res.time1,
-          time2: res.time2,
-          time3: res.time3,
-          
           });
           
       })
@@ -62,7 +43,7 @@ export default class SettingsScreen extends React.Component {
             width: '100%',
           }}
         />
-        <Button title="Enviar" color="blue"/>
+        <Button onPress={() => {}}  title="Enviar" color="blue"/>
 
     </View>
     );
