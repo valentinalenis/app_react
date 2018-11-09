@@ -53,7 +53,9 @@ class cardView extends Component {
                 <CardTitle 
                 title={this.state.name}
                 />
-                <CardContent text={this.state.place1} text={this.state.date1} text={this.state.time1}/>
+                <CardContent text={this.state.place1}/>
+                <CardContent text={this.state.date1}/>
+                <CardContent text={this.state.time1}/>
                 <CardAction 
                 separator={true} 
                 inColumn={false}>
@@ -69,7 +71,9 @@ class cardView extends Component {
                 <CardTitle 
                 title={this.state.name}
                 />
-                <CardContent text={this.state.place2} text={this.state.date2} text={this.state.time2}/>
+                <CardContent text={this.state.place2}/>
+                <CardContent text={this.state.date2}/>
+                <CardContent text={this.state.time2}/>
                 <CardAction 
                 separator={true} 
                 inColumn={false}>
@@ -85,7 +89,9 @@ class cardView extends Component {
                 <CardTitle 
                 title={this.state.name}
                 />
-                <CardContent text={this.state.place3} text={this.state.date3} text={this.state.time3}/>
+                <CardContent text={this.state.place3}/>
+                <CardContent text={this.state.date3}/>
+                <CardContent text={this.state.time3}/>
                 <CardAction 
                 separator={true} 
                 inColumn={false}>
