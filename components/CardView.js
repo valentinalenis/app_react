@@ -25,17 +25,19 @@ class cardView extends Component {
         axios
         .get("https://shrouded-beyond-36442.herokuapp.com/propuesta")
         .then(res => {
-            list = res.map(e => (<Event obj={e}/>))
+            const lista = res.map(e => (<Event obj={e}/>))
+            this.setState({list:lista})
+            console.log(res)
         });
+        
     }
 
     componentDidMount(){
         axios
-        .post('https://shrouded-beyond-36442.herokuapp.com/evento')
+        .get('https://shrouded-beyond-36442.herokuapp.com/evento')
         .then(res => {
-            getAllEvents();
+            this.getAllEvents();
             const { data } = res
-            console.log(res)
             this.setState({
                 name: res.name,
                 place1: res.place1,
@@ -62,7 +64,7 @@ class cardView extends Component {
       return (
 
         <View>
-            {list.map(e => e)}
+            {this.state.list.map(e => e)}
         </View>
       )
     }
