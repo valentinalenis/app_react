@@ -104,36 +104,3 @@ class cardView extends Component {
   
   export default cardView;
   
-
-
-
-/*
-
-const cardView = (props) => {
-
-
-      
-    return(
-        <Card>
-            <CardTitle 
-            title="Carrera 10k" 
-            subtitle="Deporte"
-            />
-            <CardContent text="No todo es comida, hay que hacer deporte, gordos." />
-            <CardAction 
-            separator={true} 
-            inColumn={false}>
-            <CardButton
-                onPress={() => {}}
-                title="Like"
-                color="blue"
-            />
-            </CardAction>
-      </Card>
-       
-    )
-    
-}
-
-export default cardView;
-*/
