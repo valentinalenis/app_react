@@ -49,6 +49,9 @@ export default class SettingsScreen extends React.Component {
     return (
      
       <View >
+       <View style={styles.getStartedContainer}>
+            <Text style={styles.getStartedText}>Califica tú evento:</Text>
+        </View>
         <Text  style={styles.blue} h1>{this.state.name}</Text>
 
         <StarCal/>
@@ -70,5 +73,15 @@ const styles = StyleSheet.create({
   
   blue: {
     color: 'blue',
+  },
+  getStartedText: {
+    fontSize: 17,
+    color: 'rgba(96,100,109, 1)',
+    lineHeight: 24,
+    textAlign: 'center',
+  },
+  getStartedContainer: {
+    alignItems: 'center',
+    marginHorizontal: 50,
   },
 });
