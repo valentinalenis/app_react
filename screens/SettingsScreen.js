@@ -22,7 +22,7 @@ export default class SettingsScreen extends React.Component {
   
   componentDidMount(){
       axios
-      .get('https://192.168.1.19:3301')
+      .get('https://shrouded-beyond-36442.herokuapp.com/evento')
       .then(res => {
           const { data } = res
           console.log(res)
@@ -38,7 +38,7 @@ export default class SettingsScreen extends React.Component {
           time2: res.time2,
           time3: res.time3,
           
-          });
+        });
           
       })
       .catch((error) =>{
