@@ -1,22 +1,11 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import StarCal from '../components/Star';
-import { Card, CardTitle, CardContent, CardAction, CardButton } from 'react-native-material-cards'
-import { Header } from 'react-native-elements';
 import axios from "axios";
 
 export default class SettingsScreen extends React.Component {
   state = {
     name: [],
-    place1: [],
-    place2: [],
-    place3: [],
-    date1: [], 
-    date2: [],
-    date3: [],
-    time1: [], 
-    time2: [],
-    time3: [],
 
   };
   
@@ -38,8 +27,8 @@ export default class SettingsScreen extends React.Component {
           time2: res.time2,
           time3: res.time3,
           
-        });
-          
+          });
+
       })
       .catch((error) =>{
         console.error(error);
@@ -51,6 +40,9 @@ export default class SettingsScreen extends React.Component {
     return (
      
       <View >
+       <View style={styles.getStartedContainer}>
+            <Text style={styles.getStartedText}>Califica tú evento:</Text>
+        </View>
         <Text  style={styles.blue} h1>{this.state.name}</Text>
 
         <StarCal/>
@@ -61,7 +53,7 @@ export default class SettingsScreen extends React.Component {
             width: '100%',
           }}
         />
-        <Button title="Enviar" color="blue"/>
+        <Button onPress={() => {}}  title="Enviar" color="blue"/>
 
     </View>
     );
@@ -72,5 +64,15 @@ const styles = StyleSheet.create({
   
   blue: {
     color: 'blue',
+  },
+  getStartedText: {
+    fontSize: 17,
+    color: 'rgba(96,100,109, 1)',
+    lineHeight: 24,
+    textAlign: 'center',
+  },
+  getStartedContainer: {
+    alignItems: 'center',
+    marginHorizontal: 50,
   },
 });

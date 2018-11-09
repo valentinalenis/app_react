@@ -60,6 +60,7 @@ class cardView extends Component {
     render() {
       
       return (
+
         <View>
             {list.map(e => e)}
         </View>

@@ -9,8 +9,6 @@ import {
   View,
 } from 'react-native';
 import { WebBrowser } from 'expo';
-import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
-import { MonoText } from '../components/StyledText';
 import Cardv from '../components/CardView';
 
 
