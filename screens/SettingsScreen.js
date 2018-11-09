@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import StarCal from '../components/Star';
-import { Card, CardTitle, CardContent, CardAction, CardButton } from 'react-native-material-cards'
-import { Header } from 'react-native-elements';
 import axios from "axios";
 
 export default class SettingsScreen extends React.Component {
