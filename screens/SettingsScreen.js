@@ -11,14 +11,24 @@ export default class SettingsScreen extends React.Component {
   
   componentDidMount(){
       axios
-      .get('https://192.168.1.19:3301')
+      .get('https://shrouded-beyond-36442.herokuapp.com/evento')
       .then(res => {
           const { data } = res
           console.log(res)
           this.setState({
           name: res.name,
-          });
+          place1: res.place1,
+          place2: res.place2,
+          place3: res.place3,
+          date1: res.date1,
+          date2: res.date2,
+          date3: res.date3,
+          time1: res.time1,
+          time2: res.time2,
+          time3: res.time3,
           
+          });
+
       })
       .catch((error) =>{
         console.error(error);
