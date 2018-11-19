@@ -6,7 +6,7 @@ class Star extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      starCount: 3.5
+      starCount: 1
     };
   }
 

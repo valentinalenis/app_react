@@ -6,42 +6,153 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View,ActivityIndicator,FlatList
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import Cardv from '../components/CardView';
-
+import { Card, CardTitle, CardContent, CardAction, CardButton } from 'react-native-material-cards'
+import PropuestasScreen from '../screens/PropuestasScreen';
+import { createStackNavigator, createBottomTabNavigator,StackNavigator } from 'react-navigation';
 
 export default class HomeScreen extends React.Component {
+  
   static navigationOptions = {
-    header: null,
+    title:'Selecciona tú favorito',
+    headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        textAlign: 'center',
+      },
+    headerStyle: {
+      backgroundColor: '#1c54b2',
+      
+    },
   };
+  
+  constructor(props){
+    super(props);
+    this.state ={ isLoading: true, prop: false}
+  }
 
+  componentDidMount(){
+    return fetch('https://shrouded-beyond-36442.herokuapp.com/propuesta')
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+        this.setState({
+          isLoading: false,
+          dataSource: responseJson,
+          carac: responseJson.characteristics,
+        }, function(){
+
+        });
+
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
+  }
+
+  renderPropuesta(){
+    this.setState({
+      prop: !this.state.prop
+     
+    });
+   
+  }
   render() {
-    return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
+
+    const v1 =  (<View>
+                  <Text>variable1</Text>
+                  <CardButton title="Presióname baby" onPress={() => this.renderPropuesta()}/>
+                </View>);
+    const v2 =  (
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <View style={styles.welcomeContainer}>
+          <Image
+            source={
+              __DEV__
+                ? require('../assets/images/robot-dev.png')
+                : require('../assets/images/robot-prod.png')
+            }
+            style={styles.welcomeImage}
+          />
+        </View>
+  
+        <View style={styles.getStartedContainer}>
+          <Text style={styles.getStartedText}>Eventos:</Text>
+        </View>
+  
+          <View >
+            <FlatList
+              data={this.state.dataSource}
+              renderItem={({item}) => 
+  
+              <Card>
+                  <CardTitle 
+                    title={item.name} 
+                    />
+                  <CardContent text= {item.description} />
+                  <CardAction 
+                  separator={true} 
+                  inColumn={false}>
+                  <CardButton
+                      onPress={() => this.renderPropuesta()}
+                      title="ver propuestas"
+                      color="blue"
+                  />
+                  </CardAction>
+                </Card>
               }
-              style={styles.welcomeImage}
+              keyExtractor={({_id}, index) => _id}
             />
-          </View>
-
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>Selecciona tú favorito:</Text>
-          </View>
-
-          <View style={styles.helpContainer}>
-            <Cardv/>
-          </View>
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     );
+    // (
+    //               <View style={styles.container}>
+    //                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    //                   <View style={styles.welcomeContainer}>
+    //                     <Image
+    //                       source={
+    //                         __DEV__
+    //                           ? require('../assets/images/robot-dev.png')
+    //                           : require('../assets/images/robot-prod.png')
+    //                       }
+    //                       style={styles.welcomeImage}
+    //                     />
+    //                   </View>
+                
+    //                   <View style={styles.getStartedContainer}>
+    //                     <Text style={styles.getStartedText}>Eventos:</Text>
+    //                   </View>
+    //                 </ScrollView>
+    //               </View>
+    //             );
+
+  let value;
+
+  if(this.state.prop){
+    value = v1
+  }else{
+    value = v2
+  }
+
+  // if(this.state.isLoading){
+  //     return(
+  //       <View style={{flex: 1, padding: 20}}>
+  //         <ActivityIndicator/>
+  //       </View>
+  //     )
+  // }
+  // return (<View>{value}
+  //   <CardButton title="Presióname baby" onPress={() => this.renderPropuesta()}/>
+  // </View>);
+    return(
+      <View style={styles.container}>
+        {value}
+      </View>
+    )    
   }
 
   _maybeRenderDevelopmentModeWarning() {
@@ -60,7 +171,7 @@ export default class HomeScreen extends React.Component {
       );
     } else {
       return (
-        <Text style={styles.developmentModeText}>
+        <Text style={styles.developmentMsodeText}>
           You are not in development mode, your app will run at full speed.
         </Text>
       );
@@ -77,6 +188,8 @@ export default class HomeScreen extends React.Component {
     );
   };
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
