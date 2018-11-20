@@ -9,10 +9,8 @@ import {
   View,ActivityIndicator,FlatList
 } from 'react-native';
 import { WebBrowser } from 'expo';
-import Cardv from '../components/CardView';
-import { Card, CardTitle, CardContent, CardAction, CardButton } from 'react-native-material-cards'
-import PropuestasScreen from '../screens/PropuestasScreen';
-import { createStackNavigator, createBottomTabNavigator,StackNavigator } from 'react-navigation';
+import { Card, CardTitle, CardContent, CardAction, CardButton } from 'react-native-material-cards';
+import { CheckBox } from 'react-native-elements';
 
 export default class HomeScreen extends React.Component {
   
@@ -31,10 +29,37 @@ export default class HomeScreen extends React.Component {
   
   constructor(props){
     super(props);
-    this.state ={ isLoading: true, prop: false}
+    this.state ={ isLoading: true, prop: false, '_id': null, 
+      caracteristicas:{
+        "characteristics": [
+          {
+              "id": 0,
+              "name": null,
+              "value": null,
+              "category": null,
+              "votes": 0
+          }
+        ]
+
+      } 
+    }
   }
 
-  componentDidMount(){
+
+  categoria = ["Hora del evento","Lugar","Fecha del evento","Regla"]
+  caracArray = []
+
+  renderPropuesta = id => {
+    this.setState({
+      prop: !this.state.prop,
+      '_id' : id
+     
+    });
+    this.getCategory(id);
+  }
+  
+
+  componentDidMount =() =>{
     return fetch('https://shrouded-beyond-36442.herokuapp.com/propuesta')
       .then((response) => response.json())
       .then((responseJson) => {
@@ -42,7 +67,8 @@ export default class HomeScreen extends React.Component {
         this.setState({
           isLoading: false,
           dataSource: responseJson,
-          carac: responseJson.characteristics,
+          
+          
         }, function(){
 
         });
@@ -53,19 +79,76 @@ export default class HomeScreen extends React.Component {
       });
   }
 
-  renderPropuesta(){
-    this.setState({
-      prop: !this.state.prop
-     
-    });
-   
-  }
-  render() {
+  getCategory = (id) =>{
+    this.categoria.forEach(e => {
+      return fetch(`https://shrouded-beyond-36442.herokuapp.com/getByCategoryByEventId?id=${id}&&category=${e}`)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      responseJson.forEach(e => this.caracArray.push(e))
+      this.setState({
+        isLoading: false,
+        dataSource2: responseJson,
+        caracteristicas: { characteristics: responseJson }
+      }, function(){
 
-    const v1 =  (<View>
-                  <Text>variable1</Text>
-                  <CardButton title="Presióname baby" onPress={() => this.renderPropuesta()}/>
-                </View>);
+      });
+
+    })
+    .catch((error) =>{
+      console.error(error);
+    });
+    })
+    
+  };
+
+  getCarac = () =>{
+    return fetch('https://shrouded-beyond-36442.herokuapp.com/propuesta')
+    .then((response) => response.json())
+    .then((responseJson) => {
+
+      this.setState({
+        isLoading: false,
+        dataSource2: responseJson.characteristics,
+        
+      }, function(){
+
+      });
+
+    })
+    .catch((error) =>{
+      console.error(error);
+    });
+  };
+
+  
+  render() {
+    
+    var radio_props = [
+      {label: 'param1', value: 0 },
+      {label: 'param2', value: 1 }
+    ];
+
+   
+
+    const v1 =  (
+      <View style={{flex: 1, paddingTop:20}}>
+        <FlatList
+            data={this.caracArray}
+            renderItem={({item}) =><View>
+              <Text>{item.name}</Text>
+              <CheckBox
+                center
+                title='Click Here'
+                checked={this.state.checked}
+              />
+              <CardButton title="Presióname baby" onPress={() => this.renderPropuesta()}/>
+            </View>
+            }
+            keyExtractor={({_id}, index) => _id}
+          />  
+        </View>
+    );
+
     const v2 =  (
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <View style={styles.welcomeContainer}>
@@ -97,7 +180,7 @@ export default class HomeScreen extends React.Component {
                   separator={true} 
                   inColumn={false}>
                   <CardButton
-                      onPress={() => this.renderPropuesta()}
+                      onPress={() => this.renderPropuesta(item._id)}
                       title="ver propuestas"
                       color="blue"
                   />
@@ -137,7 +220,6 @@ export default class HomeScreen extends React.Component {
   }else{
     value = v2
   }
-
   // if(this.state.isLoading){
   //     return(
   //       <View style={{flex: 1, padding: 20}}>
@@ -148,6 +230,7 @@ export default class HomeScreen extends React.Component {
   // return (<View>{value}
   //   <CardButton title="Presióname baby" onPress={() => this.renderPropuesta()}/>
   // </View>);
+    console.warn(this.caracArray)
     return(
       <View style={styles.container}>
         {value}
