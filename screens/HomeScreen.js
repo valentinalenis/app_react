@@ -5,190 +5,210 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,ActivityIndicator,FlatList
+  CheckBox,
+  View, ActivityIndicator, FlatList
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { Card, CardTitle, CardContent, CardAction, CardButton } from 'react-native-material-cards';
-import { CheckBox } from 'react-native-elements';
+import Toast from 'react-native-simple-toast';
+
 
 export default class HomeScreen extends React.Component {
-  
+
   static navigationOptions = {
-    title:'Selecciona tú favorito',
+    title: 'SocialHub',
     headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-        textAlign: 'center',
-      },
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
     headerStyle: {
       backgroundColor: '#1c54b2',
-      
+
     },
   };
-  
-  constructor(props){
+
+  constructor(props) {
     super(props);
-    this.state ={ isLoading: true, prop: false, '_id': null, 
-      caracteristicas:{
+    this.state = {
+      isLoading: true, prop: false, '_id': null, checked: true,
+      characteristic: [],
+      caracteristicas: {
         "characteristics": [
           {
-              "id": 0,
-              "name": null,
-              "value": null,
-              "category": null,
-              "votes": 0
+            "id": 0,
+            "name": null,
+            "value": null,
+            "category": null,
+            "votes": 0
           }
         ]
 
-      } 
+      }
     }
   }
 
 
-  categoria = ["Hora del evento","Lugar","Fecha del evento","Regla"]
+  categoria = ["Hora del evento", "Lugar", "Fecha del evento", "Regla"]
   caracArray = []
 
+
   renderPropuesta = id => {
+    console.log("Pasé por acá");
     this.setState({
       prop: !this.state.prop,
-      '_id' : id
-     
+      '_id': id,
+      characteristic: []
     });
     this.getCategory(id);
+
   }
-  
 
-  componentDidMount =() =>{
+
+  componentDidMount = () => {
+    let responseVal = '';
     return fetch('https://shrouded-beyond-36442.herokuapp.com/propuesta')
-      .then((response) => response.json())
-      .then((responseJson) => {
-
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson,
-          
-          
-        }, function(){
-
-        });
-
+      .then(response => {
+        responseVal = response;
+        return response.text()
       })
-      .catch((error) =>{
+      .then(responseJson => {
+        console.log(responseJson);
+        const json = this.tryParseJSON(responseJson);
+        if(json){
+          this.setState({
+            isLoading: false,
+            dataSource: json,
+          });
+        }
+      })
+      .catch((error) => {
         console.error(error);
       });
   }
 
-  getCategory = (id) =>{
-    this.categoria.forEach(e => {
+  getCategory = (id) => {
+    const list = [];
+    this.categoria.forEach((e, index) => {
       return fetch(`https://shrouded-beyond-36442.herokuapp.com/getByCategoryByEventId?id=${id}&&category=${e}`)
-    .then((response) => response.json())
-    .then((responseJson) => {
-      responseJson.forEach(e => this.caracArray.push(e))
-      this.setState({
-        isLoading: false,
-        dataSource2: responseJson,
-        caracteristicas: { characteristics: responseJson }
-      }, function(){
-
-      });
-
-    })
-    .catch((error) =>{
-      console.error(error);
-    });
-    })
-    
-  };
-
-  getCarac = () =>{
-    return fetch('https://shrouded-beyond-36442.herokuapp.com/propuesta')
-    .then((response) => response.json())
-    .then((responseJson) => {
-
-      this.setState({
-        isLoading: false,
-        dataSource2: responseJson.characteristics,
-        
-      }, function(){
-
-      });
-
-    })
-    .catch((error) =>{
-      console.error(error);
-    });
-  };
-
-  
-  render() {
-    
-    var radio_props = [
-      {label: 'param1', value: 0 },
-      {label: 'param2', value: 1 }
-    ];
-
-   
-
-    const v1 =  (
-      <View style={{flex: 1, paddingTop:20}}>
-        <FlatList
-            data={this.caracArray}
-            renderItem={({item}) =><View>
-              <Text>{item.name}</Text>
-              <CheckBox
-                center
-                title='Click Here'
-                checked={this.state.checked}
-              />
-              <CardButton title="Presióname baby" onPress={() => this.renderPropuesta()}/>
-            </View>
+        .then(response => {
+          return response.text();
+        })
+        .then(responseJson => {
+          console.log(responseJson);
+          const json = this.tryParseJSON(responseJson);
+          if(json){
+            json.forEach(e => {
+              e.checked = false;
+              list.push(e);
+            });
+            if(index === this.categoria.length - 1) {
+              this.setState({
+                isLoading: false,
+                dataSource2: json,
+                caracteristicas: { characteristics: json },
+                characteristic: [...list]
+              });
             }
-            keyExtractor={({_id}, index) => _id}
-          />  
+          }
+
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    })
+
+  };
+
+  capitalizeFirstLetter = string => { return string.charAt(0).toUpperCase() + string.slice(1); }
+
+  checkInput = id => {
+    const checked = [...this.state.characteristic];
+    const itemIndex = checked.findIndex(e => e._id === id);
+    const item = checked[itemIndex];
+    item.checked = !item.checked;
+    checked[itemIndex] = item;
+    //console.warn(checked);
+    //console.warn(item);
+    this.setState({ characteristic: [...checked] });
+  }
+
+
+  tryParseJSON = jsonString => {
+    try {
+      const o = JSON.parse(jsonString);
+      if (o && typeof o === "object") {
+        return o;
+      }
+    }
+    catch (e) { }
+
+    return false;
+  };
+
+  render() {
+    let counter = 0;
+    const v1 = (
+      <View style={{ flex: 1, padding: 7 }}>
+
+        <View style={styles.getStartedContainer} style={styles.contentContainer}>
+          <Text style={styles.getStartedText}>Elige las características para el evento:</Text>
         </View>
+        <FlatList
+          key={1}
+          data={this.state.characteristic}
+          renderItem={({ item }) =>
+            <View key={item.id}>
+              <Text>{this.capitalizeFirstLetter(item.name)}</Text>
+              <View style={styles.check}>
+                <View style={styles.check}>
+                  <CheckBox
+                    key={item.id}
+                    containerViewStyle={{ backgroundColor: 'blue' }}
+                    checked={item.checked}
+                    onPress={() => this.checkInput(item.id)}
+                  />
+                  <Text style={{ marginTop: 5 }}>{item.value}</Text>
+                </View>
+
+              </View>
+
+            </View>
+          }
+          keyExtractor={item => {console.log("Aquel:" + counter); counter; counter++}}
+
+        />
+        <CardButton color="blue" title="Votar" onPress={() => { Toast.show('Votación exitosa'); this.renderPropuesta() }} />
+      </View>
     );
 
-    const v2 =  (
+    const v2 = (
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/robot-dev.png')
-                : require('../assets/images/robot-prod.png')
-            }
-            style={styles.welcomeImage}
-          />
-        </View>
-  
-        <View style={styles.getStartedContainer}>
           <Text style={styles.getStartedText}>Eventos:</Text>
         </View>
-  
-          <View >
-            <FlatList
-              data={this.state.dataSource}
-              renderItem={({item}) => 
-  
+        <View >
+          <FlatList
+            data={this.state.dataSource}
+            renderItem={({ item }) =>
               <Card>
-                  <CardTitle 
-                    title={item.name} 
-                    />
-                  <CardContent text= {item.description} />
-                  <CardAction 
-                  separator={true} 
+                <CardTitle style={styles.title}
+                  title={item.name}
+                />
+                <CardContent text={item.description} />
+                <CardAction
+                  separator={true}
                   inColumn={false}>
                   <CardButton
-                      onPress={() => this.renderPropuesta(item._id)}
-                      title="ver propuestas"
-                      color="blue"
+                    onPress={() => this.renderPropuesta(item._id)}
+                    title="ver propuestas"
+                    color="blue"
                   />
-                  </CardAction>
-                </Card>
-              }
-              keyExtractor={({_id}, index) => _id}
-            />
+                </CardAction>
+              </Card>
+            }
+            keyExtractor={({ _id }, index) => _id}
+          />
         </View>
       </ScrollView>
     );
@@ -205,7 +225,7 @@ export default class HomeScreen extends React.Component {
     //                       style={styles.welcomeImage}
     //                     />
     //                   </View>
-                
+
     //                   <View style={styles.getStartedContainer}>
     //                     <Text style={styles.getStartedText}>Eventos:</Text>
     //                   </View>
@@ -213,29 +233,29 @@ export default class HomeScreen extends React.Component {
     //               </View>
     //             );
 
-  let value;
+    let value;
 
-  if(this.state.prop){
-    value = v1
-  }else{
-    value = v2
-  }
-  // if(this.state.isLoading){
-  //     return(
-  //       <View style={{flex: 1, padding: 20}}>
-  //         <ActivityIndicator/>
-  //       </View>
-  //     )
-  // }
-  // return (<View>{value}
-  //   <CardButton title="Presióname baby" onPress={() => this.renderPropuesta()}/>
-  // </View>);
-    console.warn(this.caracArray)
-    return(
+    if (this.state.prop) {
+      value = v1
+    } else {
+      value = v2
+    }
+    if (this.state.isLoading) {
+      return (
+        <View style={{ flex: 1, padding: 20 }}>
+          <ActivityIndicator />
+        </View>
+      )
+    }
+    // return (<View>{value}
+    //   <CardButton title="Presióname baby" onPress={() => this.renderPropuesta()}/>
+    // </View>);
+    //console.warn(this.state.characteristic)
+    return (
       <View style={styles.container}>
         {value}
       </View>
-    )    
+    )
   }
 
   _maybeRenderDevelopmentModeWarning() {
@@ -275,9 +295,16 @@ export default class HomeScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
+  check: {
+    flexDirection: 'row',
+    flex: 10,
+    backgroundColor: '#D5E0E850',
+  },
+
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    padding: 7,
   },
   developmentModeText: {
     marginBottom: 20,
@@ -304,6 +331,7 @@ const styles = StyleSheet.create({
   getStartedContainer: {
     alignItems: 'center',
     marginHorizontal: 50,
+    padding: 7,
   },
   homeScreenFilename: {
     marginVertical: 7,
@@ -317,10 +345,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
+    fontSize: 22,
+    color: '#1c54b2',
     lineHeight: 24,
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   tabBarInfoContainer: {
     position: 'absolute',

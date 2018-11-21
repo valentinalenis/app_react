@@ -1,97 +1,117 @@
 import React from 'react';
-import { View, Button, StyleSheet, FlatList, ActivityIndicator} from 'react-native';
-import { Card, CardTitle, CardContent,Text, CardAction, CardButton } from 'react-native-material-cards'
+import { View, Button, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { Card, CardTitle, CardContent, Text, CardAction, CardButton } from 'react-native-material-cards'
 import StarCal from '../components/Star';
-//import axios from "axios";
+import Toast from 'react-native-simple-toast';
 
 export default class SettingsScreen extends React.Component {
 
   static navigationOptions = {
-    title:'Califica tú evento',
+    title: 'SocialHub',
     headerTintColor: '#fff',
-     titleStyle: {
-        fontWeight: 'bold',
-        textAlign: 'center'
-      },
+    titleStyle: {
+      fontWeight: 'bold',
+      textAlign: 'center'
+    },
     headerStyle: {
       backgroundColor: '#1c54b2',
-      
+
     },
   };
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state ={ isLoading: true}
+    this.state = { isLoading: true }
   }
 
-  componentDidMount(){
-    return fetch('https://shrouded-beyond-36442.herokuapp.com/evento')
-      .then((response) => response.json())
-      .then((responseJson) => {
+  tryParseJSON = jsonString => {
+    try {
+      const o = JSON.parse(jsonString);
+      if (o && typeof o === "object") {
+        return o;
+      }
+    }
+    catch (e) { }
 
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson,
-          carac: responseJson.characteristics,
-        }, function(){
+    return false;
+  };
 
-        });
-
+  componentDidMount() {
+    const list = [];
+    return fetch('https://shrouded-beyond-36442.herokuapp.com/evento/findFinalizedEvents')
+      .then(response => {
+        return response.text();
       })
-      .catch((error) =>{
+      .then(responseJson => {
+        console.log(responseJson);
+        const json = this.tryParseJSON(responseJson);
+        if (json) {
+          json.forEach(e => {
+            e.checked = false;
+            list.push(e);
+          });
+
+          this.setState({
+            isLoading: false,
+            dataSource:json,
+            carac: json.characteristics,
+          }, function () {
+
+          });
+        }
+      })
+      .catch((error) => {
         console.error(error);
       });
   }
 
- 
+  render() {
 
-  render(){
-  
-    if(this.state.isLoading){
-      return(
-        <View style={{flex: 1, padding: 20}}>
-          <ActivityIndicator/>
+    if (this.state.isLoading) {
+      return (
+        <View style={{ flex: 1, padding: 20 }}>
+          <ActivityIndicator />
         </View>
       )
     }
     const characteristics = this.state.dataSource;
-    return(
+    return (
 
-      <View style={{flex: 1, paddingTop:20}}>
+      <View style={{ flex: 1, paddingTop: 20 }}>
         <FlatList
           data={this.state.dataSource}
-          renderItem={({item}) => 
+          renderItem={({ item }) =>
 
-           <Card>
-                <CardTitle 
-                title={item.name} 
-                />
-              <CardContent text= {item.description} />
-              <StarCal/>
-              <CardAction 
-              separator={true} 
-              inColumn={false}>
-              <CardButton
-                  onPress={() => {}}
+            <Card>
+              <CardTitle
+                title={item.name}
+              />
+              <CardContent text={item.description} />
+              <StarCal />
+              <CardAction
+                separator={true}
+                inColumn={false}>
+                <CardButton
+                  onPress={() => { Toast.show('Calificación exitosa'); }}
                   title="Calificar"
                   color="blue"
-              />
+                />
               </CardAction>
-             </Card>
+            </Card>
           }
-          keyExtractor={({_id}, index) => _id}
+          keyExtractor={item => { console.log(item._id); item._id }}
         />
-       
+
       </View>
     );
   }
-  
+
 }
 
 
 
 const styles = StyleSheet.create({
-  
+
   blue: {
     color: 'blue',
   },
